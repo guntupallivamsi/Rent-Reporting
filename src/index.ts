@@ -1,7 +1,7 @@
 import express from 'express';
 import { Request,Response } from 'express';
 import dotenv from 'dotenv';
-
+import { Email, Name, Password, Phone } from '../middlewares/middleware';
 
 
 dotenv.config();
@@ -18,15 +18,17 @@ app.get('/',(req:Request, res:Response) => {
 });
 
 
-app.post('/user-registration', (req:Request, res:Response) => {
-    const {name, email, password, phone} = req.body;
+app.post('/user-registration', [Name,Email,Password,Phone], (req:Request, res:Response) => {
     res.json({
-        name : name,
-        email : email,
-        password : password,
-        phone : phone
+        name : req.body.name,
+        email : req.body.email,
+        password : req.body.password,
+        phone : req.body.phone
     })
 });
+
+
+
 
 
 
