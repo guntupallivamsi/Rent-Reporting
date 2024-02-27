@@ -2,8 +2,8 @@ import express from 'express';
 import { Request,Response } from 'express';
 import { myDataSource } from './config/data_base';
 import { regist_user } from './services/user.services';
-import { json } from 'stream/consumers';
 const dotenv = require('dotenv');
+
 
 
 
@@ -22,11 +22,13 @@ app.get('/',(req:Request, res:Response) => {
 });
 
 
+
 app.post('/user-registration', async (req:Request, res:Response) => {
     const data = await regist_user(req.body);
     res.json(data);
    
 });
+
 
 app.listen(port, ()=>{
     myDataSource.initialize()
@@ -38,3 +40,4 @@ app.listen(port, ()=>{
         console.log(err);
     })
 })
+
