@@ -19,12 +19,7 @@ app.get('/',(req:Request, res:Response) => {
 
 
 app.post('/user-registration', [Name,Email,Password,Phone], (req:Request, res:Response) => {
-    res.json({
-        name : req.body.name,
-        email : req.body.email,
-        password : req.body.password,
-        phone : req.body.phone
-    })
+
 });
 
 
