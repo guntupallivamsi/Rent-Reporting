@@ -1,13 +1,13 @@
 import { json } from "stream/consumers";
 import { myDataSource } from "../config/data_base";
 import { User } from "../models/user.detail.model";
-
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
+import bcrypt from 'bcrypt';
+import jsonwebtoken from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
 
 const user_repos = myDataSource.getRepository<User>(User);
+const jwt = jsonwebtoken;
 dotenv.config({path : process.cwd()+'/.env'})
 
 
@@ -36,3 +36,4 @@ export const regist_user = async(data:{name: string, email: string, password: st
     return response;
 
 }
+

@@ -2,7 +2,8 @@ import express from 'express';
 import { Request,Response } from 'express';
 import { myDataSource } from './config/data_base';
 import { regist_user } from './services/user.services';
-const dotenv = require('dotenv');
+import { Email, Name, Password, Phone } from './middlewares/middleware';
+import dotenv from 'dotenv';
 
 
 
@@ -22,7 +23,7 @@ app.get('/',(req:Request, res:Response) => {
 });
 
 
-
+app.use(Name, Email, Password, Phone)
 app.post('/user-registration', async (req:Request, res:Response) => {
     const data = await regist_user(req.body);
     res.json(data);
