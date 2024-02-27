@@ -1,7 +1,7 @@
 import express from 'express';
 import { Request,Response } from 'express';
 import dotenv from 'dotenv';
-import { Email, Name, Password, Phone } from '../middlewares/middleware';
+import { Email, Name, Password, Phone } from './middlewares/middleware';
 
 
 dotenv.config();
