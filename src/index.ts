@@ -1,6 +1,10 @@
 import express from 'express';
 import { Request,Response } from 'express';
-import dotenv from 'dotenv';
+import { myDataSource } from './config/data_base';
+import { regist_user } from './services/user.services';
+import { json } from 'stream/consumers';
+const dotenv = require('dotenv');
+
 
 
 
@@ -18,18 +22,19 @@ app.get('/',(req:Request, res:Response) => {
 });
 
 
-app.post('/user-registration', (req:Request, res:Response) => {
-    const {name, email, password, phone} = req.body;
-    res.json({
-        name : name,
-        email : email,
-        password : password,
-        phone : phone
+app.post('/user-registration', async (req:Request, res:Response) => {
+    const data = await regist_user(req.body);
+    res.json(data);
+   
+});
+
+app.listen(port, ()=>{
+    myDataSource.initialize()
+    .then(()=>{
+        console.log(`listening from port ${port}`);
+        console.log('Database connected');
     })
-});
-
-
-
-app.listen(port,()=>{
-    console.log(`Listerning from ${port}`);
-});
+    .catch((err)=>{
+        console.log(err);
+    })
+})
