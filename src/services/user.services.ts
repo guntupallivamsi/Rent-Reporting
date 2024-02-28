@@ -3,12 +3,17 @@ import { myDataSource } from "../config/data_base";
 import { User } from "../models/user.detail.model";
 import bcrypt from 'bcrypt';
 import jsonwebtoken from 'jsonwebtoken';
+<<<<<<< HEAD
 
 const dotenv = require('dotenv');
 const jwt = jsonwebtoken;
+=======
+import dotenv from 'dotenv';
+>>>>>>> changes
 
 
 const user_repos = myDataSource.getRepository<User>(User);
+const jwt = jsonwebtoken;
 dotenv.config({path : process.cwd()+'/.env'})
 
 
@@ -37,6 +42,7 @@ export const regist_user = async(data:{name: string, email: string, password: st
     return response;
 }
 
+<<<<<<< HEAD
 
 export const user_login = async (data:{email:string, password:string}) => {
     const {email,password} = data;
@@ -51,3 +57,7 @@ export const user_login = async (data:{email:string, password:string}) => {
     }
     return {'status':404,'message' : 'user not found'};
 }
+=======
+}
+
+>>>>>>> changes
