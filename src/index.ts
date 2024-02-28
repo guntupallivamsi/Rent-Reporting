@@ -3,7 +3,7 @@ import { Request,Response } from 'express';
 import { myDataSource } from './config/data_base';
 import { regist_user,user_login } from './services/user.services';
 import { Name,Email,Password,Phone } from './middlewares/middleware';
-const dotenv = require('dotenv');
+import dotenv from 'dotenv';
 
 
 
