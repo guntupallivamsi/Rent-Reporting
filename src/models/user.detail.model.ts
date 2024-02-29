@@ -1,4 +1,5 @@
-import { Entity,PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity,PrimaryGeneratedColumn, Column, OneToOne } from "typeorm";
+import { Forget_password } from "./forget.password.model";
 
 @Entity()
 

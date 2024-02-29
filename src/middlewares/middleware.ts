@@ -1,4 +1,8 @@
 import { NextFunction, RequestHandler, Request, Response } from "express";
+import jsonwebtoken from 'jsonwebtoken';
+
+const jwt = jsonwebtoken;
+
 
 export const Name : RequestHandler = (req:Request, res:Response, next:NextFunction) => {
     req.body.name = (req.body.name).trim()
@@ -47,3 +51,16 @@ export const Phone : RequestHandler = (req:Request, res:Response, next:NextFunct
     res.send('Invalid phone number');
 };
 
+
+// export const verify_token : RequestHandler = async (req:Request, res:Response, next:NextFunction) => {
+//   const bearer_token = req.headers['authorization'];
+//   const token = bearer_token!.split(" ")[1];
+//   console.log(token);
+  
+//   const result = await jwt.verify(token,process.env.ACCESS_TOKEN_SECRET!);
+//   if(result){
+//     next()
+//     return result;  
+//   }
+//   return res.send('Invalid Token/User');
+// };
