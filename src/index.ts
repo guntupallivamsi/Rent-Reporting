@@ -6,7 +6,7 @@ import { Name,Email,Password,Phone } from './middlewares/middleware';
 import dotenv from 'dotenv';
 
 
-dotenv.config();
+dotenv.config({path:process.cwd()+'/.env'});
 
 const app = express();
 const port = process.env.APP_PORT

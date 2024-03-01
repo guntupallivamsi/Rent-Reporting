@@ -70,6 +70,8 @@ export const forgot_password = async(email:string)=>{
                 user : process.env.EMAIL,
                 pass : process.env.PASSWD
             }
+            ,
+            tls:{ rejectUnauthorized: false}
         })
 
         let date = new Date();
