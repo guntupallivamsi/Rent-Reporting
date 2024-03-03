@@ -1,20 +1,12 @@
 import express from 'express';
 import { Express,Request,Response } from 'express';
 import { myDataSource } from './config/data_base';
-<<<<<<< HEAD
 import { forgot_password, get_json_1, otp_verify, regist_user,user_login } from './services/user.service';
 import { Name,Email,Password,Phone } from './middlewares/middleware';
 import dotenv from 'dotenv';
 
-
 dotenv.config({path:process.cwd()+'/.env'});
-=======
-import { forgot_password, otp_verify, regist_user,user_login, get_json_1 } from './services/user.service';
-import { Name,Email,Password,Phone } from './middlewares/middleware';
-import dotenv from 'dotenv';
 
-dotenv.config();
->>>>>>> 6c742b4ac61c9e7084edef40da1787895ce36e09
 
 const app = express();
 const port = process.env.APP_PORT
@@ -49,10 +41,6 @@ app.post('/verify-otp',async (req:Request, res:Response) => {
     res.send(data);
 });
 
-app.get('/json_1'),async(req:Request, res: Response) => {
-    const data = await get_json_1();
-    res.send(data);
-}
 
 app.get('/get-json-1', async (req:Request, res:Response) => {
     const data = await get_json_1();
