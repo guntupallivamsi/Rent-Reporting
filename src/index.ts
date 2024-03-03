@@ -1,12 +1,20 @@
 import express from 'express';
 import { Express,Request,Response } from 'express';
 import { myDataSource } from './config/data_base';
+<<<<<<< HEAD
 import { forgot_password, get_json_1, otp_verify, regist_user,user_login } from './services/user.service';
 import { Name,Email,Password,Phone } from './middlewares/middleware';
 import dotenv from 'dotenv';
 
 
 dotenv.config({path:process.cwd()+'/.env'});
+=======
+import { forgot_password, otp_verify, regist_user,user_login, get_json_1 } from './services/user.service';
+import { Name,Email,Password,Phone } from './middlewares/middleware';
+import dotenv from 'dotenv';
+
+dotenv.config();
+>>>>>>> 6c742b4ac61c9e7084edef40da1787895ce36e09
 
 const app = express();
 const port = process.env.APP_PORT
@@ -20,8 +28,9 @@ app.get('/',(req:Request, res:Response) => {
 
 
 app.post('/user-registration', [Name,Email,Password,Phone],async (req:Request, res:Response) => {
-    const data = await regist_user(req.body);
-    res.status(200).json(data);
+    console.log(req.body); 
+    const data = await regist_user(req.body);  
+    return res.send('Successfully registered');
 });
 
 
@@ -44,6 +53,23 @@ app.get('/json_1'),async(req:Request, res: Response) => {
     const data = await get_json_1();
     res.send(data);
 }
+
+app.get('/get-json-1', async (req:Request, res:Response) => {
+    const data = await get_json_1();
+    res.json(data)
+});
+
+
+app.get('/get-json-2', async (req:Request, res:Response) => {
+    
+});
+
+
+app.get('/get-json-3', async (req:Request, res:Response) => {
+
+});
+
+
 
 app.listen(port, ()=>{
     myDataSource.initialize()

@@ -44,8 +44,6 @@ export const regist_user = async(data:{name: string, email: string, password: st
 
     return response;
 }
-
-
 export const user_login = async (data:{email:string, password:string}) => {
     const {email,password} = data;
     const user_found = await user_repos.findOneBy({email});
@@ -59,8 +57,6 @@ export const user_login = async (data:{email:string, password:string}) => {
     }
     return {'message' : 'user not found'};
 }
-
-
 export const forgot_password = async(email:string)=>{
     const user_found = await user_repos.findOneBy({email});
     if(user_found){
@@ -106,8 +102,6 @@ export const forgot_password = async(email:string)=>{
     }    
     return 'User Not Found!';   
 };
-
-
 export const otp_verify = async (req:Request,otp:string,password:string)=>{
         const bearer_token = req.headers["authorization"];
         const token = bearer_token!.split(" ")[1];
@@ -127,15 +121,12 @@ export const otp_verify = async (req:Request,otp:string,password:string)=>{
         }
         return 'Invalid User'; 
 };
-
-
 export const get_json_1 = async() => {
     const  data = new Date()
     let month = data.getMonth() + 1;
     let year = data.getFullYear();
     const dates = data + '' + month + ''+ year ;
     console.log(dates);
-    
     let category = ['pertol', 'rent', 'grocories', 'entertaiment', 'medical']
     const trans_name =[''];
     const json_data =[];
@@ -148,7 +139,6 @@ export const get_json_1 = async() => {
         }
     }
     return get_json_1;
-    
 }
 
 
