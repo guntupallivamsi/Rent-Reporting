@@ -1,7 +1,7 @@
 import express from 'express';
 import { Express,Request,Response } from 'express';
 import { myDataSource } from './config/data_base';
-import { forgot_password, otp_verify, regist_user,user_login } from './services/user.service';
+import { forgot_password, get_json_1, otp_verify, regist_user,user_login } from './services/user.service';
 import { Name,Email,Password,Phone } from './middlewares/middleware';
 import dotenv from 'dotenv';
 
@@ -40,6 +40,10 @@ app.post('/verify-otp',async (req:Request, res:Response) => {
     res.send(data);
 });
 
+app.get('/json_1'),async(req:Request, res: Response) => {
+    const data = await get_json_1();
+    res.send(data);
+}
 
 app.listen(port, ()=>{
     myDataSource.initialize()

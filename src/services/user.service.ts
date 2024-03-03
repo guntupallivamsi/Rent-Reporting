@@ -8,6 +8,7 @@ import otp_gen from 'otp-generator';
 import moment from 'moment';
 import nodemailer from 'nodemailer';
 import { Request } from "express";
+import { json } from "stream/consumers";
 
 
 
@@ -128,6 +129,27 @@ export const otp_verify = async (req:Request,otp:string,password:string)=>{
 };
 
 
+export const get_json_1 = async() => {
+    const  data = new Date()
+    let month = data.getMonth() + 1;
+    let year = data.getFullYear();
+    const dates = data + '' + month + ''+ year ;
+    console.log(dates);
+    
+    let category = ['pertol', 'rent', 'grocories', 'entertaiment', 'medical']
+    const trans_name =[''];
+    const json_data =[];
+    for( let i=0; i<200; i++){
+        json_data[i] ={
+            trans_id : i+1,
+            trans_name : '',
+            amount : (Math.random()*5000 + 1),
+            category : Math.floor(Math.random()*category.length)
+        }
+    }
+    return get_json_1;
+    
+}
 
 
 
