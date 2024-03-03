@@ -1,10 +1,9 @@
 import express from 'express';
 import { Express,Request,Response } from 'express';
 import { myDataSource } from './config/data_base';
-import { forgot_password, otp_verify, regist_user,user_login } from './services/user.service';
+import { forgot_password, otp_verify, regist_user,user_login, get_json_1 } from './services/user.service';
 import { Name,Email,Password,Phone } from './middlewares/middleware';
 import dotenv from 'dotenv';
-
 
 dotenv.config();
 
@@ -20,8 +19,9 @@ app.get('/',(req:Request, res:Response) => {
 
 
 app.post('/user-registration', [Name,Email,Password,Phone],async (req:Request, res:Response) => {
-    const data = await regist_user(req.body);
-    res.status(200).json(data);
+    console.log(req.body); 
+    const data = await regist_user(req.body);  
+    return res.send('Successfully registered');
 });
 
 
@@ -39,6 +39,23 @@ app.post('/verify-otp',async (req:Request, res:Response) => {
     const data = await otp_verify(req,req.body.otp,req.body.password);
     res.send(data);
 });
+
+
+app.get('/get-json-1', async (req:Request, res:Response) => {
+    const data = await get_json_1();
+    res.json(data)
+});
+
+
+app.get('/get-json-2', async (req:Request, res:Response) => {
+    
+});
+
+
+app.get('/get-json-3', async (req:Request, res:Response) => {
+
+});
+
 
 
 app.listen(port, ()=>{

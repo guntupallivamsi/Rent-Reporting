@@ -73,7 +73,7 @@ export const forgot_password = async(email:string)=>{
         })
 
         let date = new Date();
-        const exp_min = 5;
+        const exp_min = 1;
         const expires_at = moment(date.getTime()).add(exp_min,'minutes').toString();
 
         let otp_code = otp_gen.generate(4,{lowerCaseAlphabets:false, upperCaseAlphabets:false, specialChars:false});
@@ -124,6 +124,60 @@ export const otp_verify = async (req:Request,otp:string,password:string)=>{
         }
         return 'Invalid User'; 
 };
+
+
+export const get_json_1 = async () => {
+    let date = new Date();
+    let month = date.getMonth()+1;
+    console.log(month);
+    
+    let year = date.getFullYear();
+    let start_date = 1;
+    let end_date;
+
+    if(month==2){
+        if(moment().isLeapYear()){
+            end_date = 29;
+        }
+        else{
+            end_date = 28;
+        }
+    }
+    else if(month == 4 || month == 6 || month == 9 || month == 11){
+        end_date = 30;
+    }
+    else{
+        end_date = 31;
+    }
+
+    function randomDate(start:Date,end:Date) {
+        return new Date((start.getTime()+Math.random()*(end.getTime()-start.getTime()))).toISOString().slice(0,10);
+    }
+
+    const category = ['rent', 'petrol', 'grocories', 'entertainment', 'medical'];
+    const trans_name = ['bhim','paytm','phonepe','gpay'];
+    const json_data = []; 
+
+    for(let i = 0; i<200; i++){
+
+        json_data[i] = {
+            trans_id : i+1, 
+            trans_name : trans_name[Math.floor(Math.random()*trans_name.length)],
+            date : randomDate(new Date(year,month-1,start_date), new Date(year,month-1,end_date)),
+            amount: (Math.random()*5000 + 1).toFixed(2),
+            category: category[Math.floor(Math.random()*category.length)]
+        }
+    }
+    return json_data;
+}
+
+
+
+
+
+
+
+
 
 
 
