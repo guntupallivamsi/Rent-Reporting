@@ -130,15 +130,14 @@ function randomDate(year:number,month:number,days:number) {
 const category = ['rent', 'petrol', 'grocories', 'entertainment', 'medical'];
 
 let month = moment().month()+1;
-let year = moment().year();
-
-
-async function get_json_data(overall_months:number,records:number) {
-    let yr;    
-    let m = month,cnt;
+async function get_json_data(overall_months:number,iter:number,records:number) {
+    let year = moment().year();
+    let yr,m = overall_months;    
+    let currentMonth = moment().month();
+    let tot = overall_months-currentMonth;
     const json_data = [];
     
-        for(cnt = 0; cnt<overall_months; cnt++) {
+        for(let cnt = 0; cnt<iter; cnt++) {
             if (m>12) {
                 yr = moment().add(1, 'years').format('YYYY').slice(0,4);
                 year = parseInt(yr)
@@ -157,7 +156,7 @@ async function get_json_data(overall_months:number,records:number) {
 
                     for(let trans = 0; trans<rand_num && i<records; trans++)
                     {
-
+                        
                         let trans_name = "";
                         for(let len = 0; len<12; len++){
                             trans_name += Math.floor(Math.random()*10)
@@ -175,24 +174,24 @@ async function get_json_data(overall_months:number,records:number) {
                 }
                 m++;
             }
-            month = parseInt(moment().add(overall_months,'months').format('MM'))
+
             return json_data;
 }
 let current_month = moment().month()+1;
 
 export const get_json_1 = async () => {
-    const data = await get_json_data(1,200);
+    const data = await get_json_data(current_month,1,200);
     return data;
 }
 
 
 export const get_json_2 = async () => {
-    const data = await get_json_data(3,166);
+    const data = await get_json_data(current_month+1,3,166);
     return data;
 }
 
 
 export const get_json_3 = async () => {
-    const data = await get_json_data(3,166);
+    const data = await get_json_data(current_month+4,3,166);
     return data;
 }
