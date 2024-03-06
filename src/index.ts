@@ -1,7 +1,7 @@
 import express from 'express';
 import { Express,Request,Response } from 'express';
 import { myDataSource } from './config/data_base';
-import { forgot_password, get_json_1, otp_verify, regist_user,user_login } from './services/user.service';
+import { forgot_password, get_json_1, get_json_2, get_json_3, otp_verify, regist_user,user_login } from './services/user.service';
 import { Name,Email,Password,Phone } from './middlewares/middleware';
 import dotenv from 'dotenv';
 
@@ -49,15 +49,15 @@ app.get('/get-json-1', async (req:Request, res:Response) => {
 
 
 app.get('/get-json-2', async (req:Request, res:Response) => {
-    
+    const data = await get_json_2();
+    res.json(data)
 });
 
 
 app.get('/get-json-3', async (req:Request, res:Response) => {
-
-});
-
-
+    const data = await get_json_3();
+    res.json(data)
+})
 
 app.listen(port, ()=>{
     myDataSource.initialize()
@@ -68,5 +68,4 @@ app.listen(port, ()=>{
     .catch((err)=>{
         console.log(err);
     })
-})
-
+});

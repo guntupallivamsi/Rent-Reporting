@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import otp_gen from 'otp-generator';
-import moment from 'moment';
+import moment, { months } from 'moment';
 import nodemailer from 'nodemailer';
 import { Request } from "express";
 
@@ -101,89 +101,98 @@ export const forgot_password = async(email:string)=>{
 
         return 'Email sent';
     }    
-    return 'User Not Found!';   
-};
-
-
+}
 export const otp_verify = async (req:Request,otp:string,password:string)=>{
-        const bearer_token = req.headers["authorization"];
-        const token = bearer_token!.split(" ")[1];
-        const data =  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as JwtPayload;
-        if(data){
-            const email = data.Data;
-            const user_found = await forget_pass.findOneBy({email});
-            if(user_found){
-                if(user_found.otp === otp){
-                    let hashedpassword = await bcrypt.hash(password,10);
-                    await user_repos.update({email},{password:hashedpassword});
-                    return 'Password Updated';
-                }
-                return 'Invalid OTP';
+    const bearer_token = req.headers["authorization"];
+    const token = bearer_token!.split(" ")[1];
+    const data =  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as JwtPayload;
+    if(data){
+        const email = data.Data;
+        const user_found = await forget_pass.findOneBy({email});
+        if(user_found){
+            if(user_found.otp === otp){
+                let hashedpassword = await bcrypt.hash(password,10);
+                await user_repos.update({email},{password:hashedpassword});
+                return 'Password Updated';
             }
-            return 'Invalid User';
+            return 'Invalid OTP';
         }
-        return 'Invalid User'; 
+        return 'Invalid User';
+    }
+    return 'Invalid User'; 
 };
 
+function randomDate(year:number,month:number,days:number) {
+    const randomday = Math.floor(Math.random()*days+1)
+    return moment(new Date(`${year}-${month}-${randomday}`)).format('YYYY-MM-DD').slice(0,10);
+}
+
+const category = ['rent', 'petrol', 'grocories', 'entertainment', 'medical'];
+
+let month = moment().month()+1;
+let year = moment().year();
+
+
+async function get_json_data(overall_months:number,records:number) {
+    let yr;    
+    let m = month,cnt;
+    const json_data = [];
+    
+        for(cnt = 0; cnt<overall_months; cnt++) {
+            if (m>12) {
+                yr = moment().add(1, 'years').format('YYYY').slice(0,4);
+                year = parseInt(yr)
+                month = parseInt(moment().month(0).format('MM'))
+                m = month;
+            }
+            for(let i = 0; i<records;)
+                {
+                    let rand_num = Math.floor(Math.random()*11);
+                    
+                    if(rand_num!=0){
+                        var date;       
+                        const days = moment(`${year}-${m}`, 'YYYY-MM').daysInMonth();         
+                        date =  randomDate(year,m,days);
+                    }
+
+                    for(let trans = 0; trans<rand_num && i<records; trans++)
+                    {
+
+                        let trans_name = "";
+                        for(let len = 0; len<12; len++){
+                            trans_name += Math.floor(Math.random()*10)
+                        }
+
+                        json_data.push({
+                            trans_id : i+1,
+                            trans_name : trans_name, 
+                            trans_date : date,
+                            amount: (Math.random()*5000 + 1).toFixed(2),
+                            category: category[Math.floor(Math.random()*category.length)]
+                        });
+                        i+=1;
+                    }
+                }
+                m++;
+            }
+            month = parseInt(moment().add(overall_months,'months').format('MM'))
+            return json_data;
+}
+let current_month = moment().month()+1;
 
 export const get_json_1 = async () => {
-    let date = new Date();
-    let month = date.getMonth()+1;
-    console.log(month);
-    
-    let year = date.getFullYear();
-    let start_date = 1;
-    let end_date;
-
-    if(month==2){
-        if(moment().isLeapYear()){
-            end_date = 29;
-        }
-        else{
-            end_date = 28;
-        }
-    }
-    else if(month == 4 || month == 6 || month == 9 || month == 11){
-        end_date = 30;
-    }
-    else{
-        end_date = 31;
-    }
-
-    function randomDate(start:Date,end:Date) {
-        return new Date((start.getTime()+Math.random()*(end.getTime()-start.getTime()))).toISOString().slice(0,10);
-    }
-
-    const category = ['rent', 'petrol', 'grocories', 'entertainment', 'medical'];
-    const trans_name = ['bhim','paytm','phonepe','gpay'];
-    const json_data = []; 
-
-    for(let i = 0; i<200; i++){
-
-        json_data[i] = {
-            trans_id : i+1, 
-            trans_name : trans_name[Math.floor(Math.random()*trans_name.length)],
-            date : randomDate(new Date(year,month-1,start_date), new Date(year,month-1,end_date)),
-            amount: (Math.random()*5000 + 1).toFixed(2),
-            category: category[Math.floor(Math.random()*category.length)]
-        }
-    }
-    return json_data;
+    const data = await get_json_data(1,200);
+    return data;
 }
 
 
+export const get_json_2 = async () => {
+    const data = await get_json_data(3,166);
+    return data;
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+export const get_json_3 = async () => {
+    const data = await get_json_data(3,166);
+    return data;
+}
