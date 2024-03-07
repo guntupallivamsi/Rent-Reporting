@@ -5,7 +5,8 @@ import { forgot_password, otp_verify, regist_user,user_login, get_json_1, get_js
 import { Name,Email,Password,Phone } from './middlewares/middleware';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({path:process.cwd()+'/.env'});
+
 
 const app = express();
 const port = process.env.APP_PORT
@@ -50,8 +51,7 @@ app.get('/get-json-1', async (req:Request, res:Response) => {
 app.get('/get-json-2', async (req:Request, res:Response) => {
     const data = await get_json_2();
     res.send(data);
-}); 
-
+});
 
 app.get('/get-json-3', async (req:Request, res:Response) => {
     const data = await get_json_3();
@@ -74,5 +74,4 @@ app.listen(port, ()=>{
     .catch((err)=>{
         console.log(err);
     })
-})
-
+});

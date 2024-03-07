@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 import jsonwebtoken, { JwtPayload } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import otp_gen from 'otp-generator';
-import moment from 'moment';
+import moment, { months } from 'moment';
 import nodemailer from 'nodemailer';
 import { Request } from "express";
 
@@ -102,33 +102,26 @@ export const forgot_password = async(email:string)=>{
 
         return 'Email sent';
     }    
-    return 'User Not Found!';   
-};
-
-
+}
 export const otp_verify = async (req:Request,otp:string,password:string)=>{
-        const bearer_token = req.headers["authorization"];
-        const token = bearer_token!.split(" ")[1];
-        const data =  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as JwtPayload;
-        if(data){
-            const email = data.Data;
-            const user_found = await forget_pass.findOneBy({email});
-            if(user_found){
-                if(user_found.otp === otp){
-                    let hashedpassword = await bcrypt.hash(password,10);
-                    await user_repos.update({email},{password:hashedpassword});
-                    return 'Password Updated';
-                }
-                return 'Invalid OTP';
+    const bearer_token = req.headers["authorization"];
+    const token = bearer_token!.split(" ")[1];
+    const data =  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as JwtPayload;
+    if(data){
+        const email = data.Data;
+        const user_found = await forget_pass.findOneBy({email});
+        if(user_found){
+            if(user_found.otp === otp){
+                let hashedpassword = await bcrypt.hash(password,10);
+                await user_repos.update({email},{password:hashedpassword});
+                return 'Password Updated';
             }
-            return 'Invalid User';
+            return 'Invalid OTP';
         }
-        return 'Invalid User'; 
+        return 'Invalid User';
+    }
+    return 'Invalid User'; 
 };
-
-
-
-
 
 
 function randomDate (year:number,month:number) {
@@ -220,15 +213,6 @@ export const get_json_4 = async () => {
 
 
 
-
-
-
-
-
-
-
-
-
-
+                   
 
 

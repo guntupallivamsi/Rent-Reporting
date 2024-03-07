@@ -3,10 +3,12 @@ const dotenv = require('dotenv');
 
 dotenv.config({path:process.cwd()+'/.env'})
 
+
+
 export const myDataSource : DataSource= new DataSource({
     type : "mysql",
     host : "localhost",
-    port  : Number(process.env.Mysql_PORT),
+    port :  Number(process.env.Mysql_PORT),
     username : process.env.Mysql_username,
     password : process.env.Mysql_password,
     database : process.env.database,
@@ -14,3 +16,4 @@ export const myDataSource : DataSource= new DataSource({
     synchronize : true,
     logging : true
 })
+

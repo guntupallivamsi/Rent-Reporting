@@ -48,7 +48,7 @@ export const Phone : RequestHandler = (req:Request, res:Response, next:NextFunct
     if(/^\d{10}$/.test(phone)){
         return next();
     }
-    res.send('Invalid phone number');
+    return res.send('Invalid phone number');
 };
 
 
