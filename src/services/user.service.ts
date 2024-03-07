@@ -11,6 +11,7 @@ import { Request } from "express";
 
 
 
+
 const user_repos = myDataSource.getRepository<User>(User);
 const forget_pass = myDataSource.getRepository<Forget_password>(Forget_password);
 
@@ -126,52 +127,96 @@ export const otp_verify = async (req:Request,otp:string,password:string)=>{
 };
 
 
-export const get_json_1 = async () => {
-    let date = new Date();
-    let month = date.getMonth()+1;
-    console.log(month);
-    
-    let year = date.getFullYear();
-    let start_date = 1;
-    let end_date;
 
-    if(month==2){
-        if(moment().isLeapYear()){
-            end_date = 29;
-        }
-        else{
-            end_date = 28;
-        }
-    }
-    else if(month == 4 || month == 6 || month == 9 || month == 11){
-        end_date = 30;
-    }
-    else{
-        end_date = 31;
-    }
 
-    function randomDate(start:Date,end:Date) {
-        return new Date((start.getTime()+Math.random()*(end.getTime()-start.getTime()))).toISOString().slice(0,10);
-    }
 
-    const category = ['rent', 'petrol', 'grocories', 'entertainment', 'medical'];
-    const trans_name = ['bhim','paytm','phonepe','gpay'];
-    const json_data = []; 
 
-    for(let i = 0; i<200; i++){
-
-        json_data[i] = {
-            trans_id : i+1, 
-            trans_name : trans_name[Math.floor(Math.random()*trans_name.length)],
-            date : randomDate(new Date(year,month-1,start_date), new Date(year,month-1,end_date)),
-            amount: (Math.random()*5000 + 1).toFixed(2),
-            category: category[Math.floor(Math.random()*category.length)]
-        }
-    }
-    return json_data;
+function randomDate (year:number,month:number) {
+    const days = moment(`${year}-${month}`, 'YYYY-MM').daysInMonth();
+    const randomday = Math.floor(Math.random()*days+1);
+    return moment(new Date(`${year}-${month}-${randomday}`)).format('YYYY-MM-DD').slice(0,10);
 }
 
 
+const category = ['rent', 'petrol', 'grocories', 'entertainment', 'medical'];
+
+
+function get_json_data(overall_month:string,iter:number,records:number) {
+
+    let m = overall_month.slice(5,7);
+    let year = overall_month.slice(0,4);
+    
+    const json_data = [];
+    
+        for(let cnt = 0; cnt<iter; cnt++) {
+            
+                for(let i = 0; i<records;)
+                {
+                    let rand_num = Math.floor(Math.random()*11);
+                    
+                    if(rand_num!=0){
+                        var date;       
+                        date =  randomDate(parseInt(year), parseInt(m));
+                    }
+
+                    for(let trans = 0; trans<rand_num && i<records; trans++)
+                    {
+
+                        let trans_name = "";
+
+                        for(let len = 0; len<12; len++){
+                            trans_name += Math.floor(Math.random()*10)
+                        }
+
+                        json_data.push({
+                            trans_id : i+1,
+                            trans_name : trans_name, 
+                            trans_date : date,
+                            amount: (Math.random()*5000 + 1).toFixed(2),
+                            category: category[Math.floor(Math.random()*category.length)]
+                        });
+                        i+=1;
+                    }
+                }
+                let new_month = moment(`${year}-${m}`).add(1,'month').format('YYYY-MM');
+                year = new_month.slice(0,4);
+                m = new_month.slice(5,7);
+            }
+            return json_data;
+}
+
+let current_month = moment().format('YYYY-MM');
+
+export const get_json_1 = async () => {
+    const data = await get_json_data(current_month,1,200);
+    return data;
+}
+
+
+let json2_month = moment(current_month).add(1,'month').format('YYYY-MM');
+
+export const get_json_2 = async () => {
+    const data = await get_json_data(json2_month,3,166);
+    return data;
+}
+
+
+let json3_month = moment(json2_month).add(3,'month').format('YYYY-MM')
+
+export const get_json_3 = async () => {
+    const data = await get_json_data(json3_month,3,166);
+    return data;
+}
+
+
+export const get_json_4 = async () => {
+    const json4 = [];
+    for(let i = 0; i<24; i++) {
+        const data = await get_json_data(moment(current_month).subtract(i,'month').format('YYYY-MM'), 1, Math.floor(Math.random()*301+1));
+        json4[i] = data;
+    }
+    return json4;
+}
 
 
 
