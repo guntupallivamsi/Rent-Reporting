@@ -1,6 +1,5 @@
-import { Entity,PrimaryGeneratedColumn, Column, OneToOne } from "typeorm";
-import { Forget_password } from "./forget.password.model";
-
+import { Entity,PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from "typeorm";
+import { Transaction } from "./trans.model";
 @Entity()
 
 export class User{
@@ -18,4 +17,7 @@ export class User{
 
     @Column()
     phonenumber !: string;
+
+    @OneToMany(()=>Transaction, (trans)=>trans.user)
+    transactions!:Transaction[]
 }
